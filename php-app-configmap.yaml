@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-app-code
+data:
+  index.php: |
+    <?php
+    session_start();
+    $mysqli = new mysqli("mysql-service", "root", "password", "login_db");
+
+    if ($mysqli->connect_error) {
+        die("Connection failed: " . $mysqli->connect_error);
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $username = $mysqli->real_escape_string($_POST['username']);
+        $password = $mysqli->real_escape_string($_POST['password']);
+
+        $result = $mysqli->query("SELECT * FROM users WHERE username='$username' AND password='$password'");
+
+        if ($result->num_rows > 0) {
+            $_SESSION['username'] = $username;
+            header("Location: welcome.php");
+        } else {
+            echo "Login failed. Please check your username and password.";
+        }
+    }
+  welcome.php: |
+    <?php
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header("Location: index.php");
+        exit();
+    }
+    ?>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Welcome</title>
+    </head>
+    <body>
+        <h2>Welcome, <?php echo $_SESSION['username']; ?>!</h2>
+        <a href="logout.php">Logout</a>
+    </body>
+    </html>
+  logout.php: |
+    <?php
+    session_start();
+    session_destroy();
+    header("Location: index.php");
+    ?>
