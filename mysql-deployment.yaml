@@ -31,18 +31,6 @@ spec:
             claimName: pvc-login
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-login
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  storageClassName: login
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: pv-login
@@ -55,3 +43,15 @@ spec:
   nfs:
     path: "/mnt/kubernetes-pool/kubernetes/app/assets"
     server: 192.168.100.106
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-login
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: login
