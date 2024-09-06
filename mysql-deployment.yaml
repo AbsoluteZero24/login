@@ -40,3 +40,18 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  storageClassName: login
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-nas
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: login
+  nfs:
+    path: "/mnt/kubernetes-pool/kubernetes/app/assets"
+    server: 192.168.100.106
