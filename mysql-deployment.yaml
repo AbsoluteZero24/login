@@ -28,12 +28,12 @@ spec:
       volumes:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: mysql-pv-claim
+            claimName: pvc-login
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pv-claim
+  name: pvc-login
 spec:
   accessModes:
     - ReadWriteOnce
@@ -45,7 +45,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-nas
+  name: pv-login
 spec:
   capacity:
     storage: 1Gi
